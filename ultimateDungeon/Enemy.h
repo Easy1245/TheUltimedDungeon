@@ -18,7 +18,7 @@ public:
 
     void takeDamage(int dmg) { health -= dmg; }
 
-    virtual int attack() const = 0; // abstract function
+    virtual int attack() const = 0; 
 };
 
 #endif
