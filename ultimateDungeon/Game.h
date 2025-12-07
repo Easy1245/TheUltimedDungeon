@@ -3,9 +3,22 @@
 
 #include "Player.h"
 
-void showRoom(const Player& player);
-void takeItems(Player& player);
-void fight(Player& player);
-void movePlayer(Player& player, int index);
+class Game
+{
+public:
+    Game() = default;
+
+
+void showStats(const Player& player) const;
+void showRoom(const Player& player) const;
+void takeItems(Player& player) const;
+void fight(Player& player) const;
+void movePlayer(Player& player, int index) const;
+
+private:
+
+    void enterRoom(Player& player, Room* next, Room* previuos) const;
+
+};
 
 #endif
