@@ -41,7 +41,18 @@ void Game::showRoom(const Player& player) const
 void Game::takeItems(Player& player) const
 {
     Room* r = player.getRoom();
-    if (r->getItems().empty()) { std::cout << "Geen items.\n"; return; }
+
+    if (r->treasure())
+    {
+        std::cout << "Je hebt de schat gevonden! Je wint!\n";
+        exit(0);
+    }
+
+    if (r->getItems().empty())
+    {
+        std::cout << "Geen items.\n";
+        return;
+    }
 
     auto& items = r->accessItems();
     for (auto& item : items)
@@ -50,13 +61,8 @@ void Game::takeItems(Player& player) const
         player.addItem(item);
     }
     items.clear();
-
-    if (r->treasure())
-    {
-        std::cout << "Je hebt de schat gevonden! Je wint!\n";
-        exit(0);
-    }
 }
+
 
 void Game::fight(Player& player) const
 {
