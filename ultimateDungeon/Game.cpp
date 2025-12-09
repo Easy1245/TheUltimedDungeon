@@ -17,7 +17,14 @@ void Game::showRoom(const Player& player) const
     Room* r = player.getRoom();
 
     std::cout << "\nJe bent in: " << r->getName() << "\n"
-              << r->getDescription() << "\n";
+              << r->getDescription() << "\n\n";
+
+    if (r->getEnemy())
+    {
+        std::cout << "Er is een vijand hier: "
+                  << r->getEnemy()->getName() << "!\n";
+        std::cout << "Typ 'fight' om te vechten of 'run' om terug te rennen.\n\n";
+    }
 
     for (auto& item : r->getItems())
         std::cout << "Je ziet een item: " << item << "\n";
@@ -25,7 +32,7 @@ void Game::showRoom(const Player& player) const
     if (r->treasure())
         std::cout << "Je ziet een schatkist!\n";
 
-    std::cout << "Beschikbare uitgangen:\n";
+    std::cout << "\nBeschikbare uitgangen:\n";
     auto& conns = r->getConnections();
     for (size_t i = 0; i < conns.size(); i++)
         std::cout << "  [" << i << "] " << conns[i]->getName() << "\n";
