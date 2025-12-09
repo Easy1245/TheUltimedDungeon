@@ -9,11 +9,11 @@ public:
     Game() = default;
 
 
-void showStats(const Player& player) const;
-void showRoom(const Player& player) const;
-void takeItems(Player& player) const;
-void fight(Player& player) const;
-void movePlayer(Player& player, int index) const;
+    void showStats(const Player& player) const;
+    void showRoom(const Player& player) const;
+    void takeItems(Player& player) const;
+    void fight(Player& player) const;
+    void movePlayer(Player& player, int index) const;
 
 private:
 
