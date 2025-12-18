@@ -3,11 +3,13 @@
 
 #include "Player.h"
 
-class Game
-{
-public:
-    Game() = default;
+namespace dungeon {
 
+class Game {
+public:
+    Game();
+    Game(const Game&);
+    ~Game();
 
     void showStats(const Player& player) const;
     void showRoom(const Player& player) const;
@@ -16,9 +18,9 @@ public:
     void movePlayer(Player& player, int index) const;
 
 private:
-
-    void enterRoom(Player& player, Room* next, Room* previuos) const;
-
+    void enterRoom(Player& player, Room* next, Room* previous) const;
 };
+
+} // namespace dungeon
 
 #endif
