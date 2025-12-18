@@ -6,6 +6,8 @@
 #include <memory>
 #include "Enemy.h"
 
+namespace dungeon {
+
 class Room {
 private:
     int id;
@@ -20,23 +22,29 @@ private:
 public:
     static const int MAX_CONNECTIONS = 4;
 
+    Room();
     Room(int id, const std::string& name, const std::string& desc);
+    Room(const Room& other);
+    ~Room();
 
-    const std::string& getName() const { return name; }
-    const std::string& getDescription() const { return description; }
-    Enemy* getEnemy() const { return enemy.get(); }
+    const std::string& getName() const;
+    const std::string& getDescription() const;
 
-    void addItem(const std::string& item) { items.push_back(item); }
-    void setEnemy(std::unique_ptr<Enemy> e) { enemy = std::move(e); }
-    void removeEnemy() { enemy.reset(); }
+    Enemy* getEnemy() const;
+    void setEnemy(std::unique_ptr<Enemy> e);
+    void removeEnemy();
+
+    void addItem(const std::string& item);
+    std::vector<std::string>& accessItems();
+    const std::vector<std::string>& getItems() const;
+
     void connect(Room* other);
+    const std::vector<Room*>& getConnections() const;
 
-    std::vector<std::string>& accessItems() { return items; }
-    const std::vector<std::string>& getItems() const { return items; }
-    bool treasure() const { return hasTreasure; }
-    void setTreasure(bool t) { hasTreasure = t; }
-
-    const std::vector<Room*>& getConnections() const { return connections; }
+    bool treasure() const;
+    void setTreasure(bool t);
 };
+
+} // namespace dungeon
 
 #endif
