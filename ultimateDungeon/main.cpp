@@ -2,16 +2,18 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <string>
 
-#include "dungeonBuilder.h"
+#include "Dungeonbuilder.h"
 #include "Game.h"
 #include "Player.h"
 #include "Room.h"
 
-bool gameRunning = true;
-
 int main()
 {
+    using namespace dungeon;
+
+    bool gameRunning = true;
 
     std::vector<std::unique_ptr<Room>> rooms;
 
@@ -31,32 +33,30 @@ int main()
 
         std::string input;
         if (!std::getline(std::cin, input))
-        {
-            std::cin.clear();
             continue;
-        }
 
+        // trim
         input.erase(0, input.find_first_not_of(" \t\n\r"));
         input.erase(input.find_last_not_of(" \t\n\r") + 1);
 
         if (input == "q")
         {
-            std::cout << "👋 Je hebt het spel verlaten.\n";
-            break;
+            std::cout << "Je hebt het spel verlaten.\n";
+            gameRunning = false;
         }
         else if (input == "take")
         {
             game.takeItems(player);
-            continue;
         }
         else if (!std::all_of(input.begin(), input.end(), ::isdigit))
         {
             std::cout << "Ongeldige input! Typ een nummer, 'take' of 'q'.\n";
-            continue;
         }
-
-        int index = std::stoi(input);
-        game.movePlayer(player, index);
+        else
+        {
+            int index = std::stoi(input);
+            game.movePlayer(player, index);
+        }
     }
 
     std::cout << "\n🎮 Game gesloten.\n";
