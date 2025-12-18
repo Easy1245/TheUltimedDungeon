@@ -3,22 +3,28 @@
 
 #include <string>
 
+namespace dungeon {
+
 class Enemy {
 protected:
     std::string name;
     int health;
 
 public:
-    Enemy(const std::string& n, int h) : name(n), health(h) {}
-    virtual ~Enemy() {}
+    Enemy();
+    Enemy(const std::string& n, int h);
+    Enemy(const Enemy& other);
+    virtual ~Enemy();
 
-    std::string getName() const { return name; }
-    int getHealth() const { return health; }
-    bool isDead() const { return health <= 0; }
+    const std::string& getName() const;
+    int getHealth() const;
+    bool isDead() const;
 
-    void takeDamage(int dmg) { health -= dmg; }
+    void takeDamage(int dmg = 1);
 
-    virtual int attack() const = 0; 
+    virtual int attack() const = 0;
 };
+
+} // namespace dungeon
 
 #endif
