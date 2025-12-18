@@ -5,13 +5,16 @@
 #include <memory>
 #include "Room.h"
 #include "Player.h"
-#include "Monster.h"
+
+namespace dungeon {
 
 class DungeonBuilder
 {
 public:
-    // bouwt kamers, items, monsters, treasure, en returnt de gemaakte speler
+    DungeonBuilder() = default;
     Player build(std::vector<std::unique_ptr<Room>>& rooms);
 };
 
-#endif
+} // namespace dungeon
+
+#endif // DUNGEONBUILDER_H
