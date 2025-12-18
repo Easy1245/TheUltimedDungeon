@@ -53,26 +53,116 @@ void Game::takeItems(Player& player) const {
     items.clear();
 }
 
-void Game::fight(Player& player) const {
+void Game::fight(Player& player) const
+{
     Enemy* enemy = player.getRoom()->getEnemy();
-    if (!enemy) return;
+    if (!enemy)
+        return;
 
-    while (!enemy->isDead() && player.getHealth() > 0) {
-        enemy->takeDamage(player.getDamage());
-        player.takeDamage(
-            std::max(0, enemy->attack() - player.getDefense()));
+    std::cout << "\n⚔️  Combat started with "
+              << enemy->getName() << "!\n\n";
+
+    while (!enemy->isDead() && player.getHealth() > 0)
+    {
+        // Player attacks
+        int playerDamage = player.getDamage();
+        enemy->takeDamage(playerDamage);
+
+        std::cout << "You attack "
+                  << enemy->getName()
+                  << " for " << playerDamage << " damage!\n";
+        std::cout << enemy->getName()
+                  << " HP: "
+                  << std::max(0, enemy->getHealth()) << "\n\n";
+
+        if (enemy->isDead())
+            break;
+
+        // Enemy attacks
+        int enemyDamage =
+            std::max(0, enemy->attack() - player.getDefense());
+        player.takeDamage(enemyDamage);
+
+        std::cout << enemy->getName()
+                  << " attacks you for "
+                  << enemyDamage << " damage!\n";
+        std::cout << "Your HP: "
+                  << std::max(0, player.getHealth()) << "\n\n";
     }
+
+    if (player.getHealth() <= 0)
+    {
+        std::cout << "💀 You died. Game over.\n";
+        std::exit(0);
+    }
+
+    std::cout << "🏆 You defeated "
+              << enemy->getName() << "!\n";
+
     player.getRoom()->removeEnemy();
 }
 
-void Game::enterRoom(Player& player, Room* next, Room* previous) const {
+
+void Game::enterRoom(Player& player, Room* next, Room* previous) const
+{
     player.moveTo(next);
+
+    Enemy* enemy = next->getEnemy();
+    if (!enemy)
+        return;
+
+    std::cout << "\nThere is an enemy: "
+              << enemy->getName() << "!\n";
+
+    while (enemy && !enemy->isDead())
+    {
+        std::cout << "Type 'fight' to attack or 'run' to go back: ";
+
+        std::string input;
+        std::getline(std::cin, input);
+
+        // trim
+        input.erase(0, input.find_first_not_of(" \t\n\r"));
+        input.erase(input.find_last_not_of(" \t\n\r") + 1);
+
+        if (input == "fight")
+        {
+            fight(player);
+            break;
+        }
+        else if (input == "run")
+        {
+            std::cout << "You run back!\n";
+            player.moveTo(previous);
+            break;
+        }
+        else
+        {
+            std::cout << "Invalid input. Type 'fight' or 'run'.\n";
+        }
+    }
 }
 
-void Game::movePlayer(Player& player, int index) const {
-    auto& conns = player.getRoom()->getConnections();
-    if (index >= 0 && index < (int)conns.size())
-        enterRoom(player, conns[index], player.getRoom());
+
+void Game::movePlayer(Player& player, int index) const
+{
+    Room* current = player.getRoom();
+
+    if (current->getEnemy())
+    {
+        std::cout << "You cannot leave while an enemy is alive!\n";
+        return;
+    }
+
+    const auto& conns = current->getConnections();
+    if (index < 0 || index >= (int)conns.size())
+    {
+        std::cout << "Invalid choice.\n";
+        return;
+    }
+
+    enterRoom(player, conns[index], current);
 }
+
 
 } // namespace dungeon
