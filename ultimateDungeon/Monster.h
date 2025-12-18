@@ -3,11 +3,21 @@
 
 #include "Enemy.h"
 #include <cstdlib>
+#include <string>
 
-class Monster : public Enemy {
+namespace dungeon {
+
+class Monster : public Enemy
+{
 public:
-    Monster(const std::string& n, int h) : Enemy(n, h) {}
-    int attack() const override { return (rand() % 16) + 5; }
+    Monster();
+    Monster(const std::string& n, int h);
+    Monster(const Monster& other);
+    ~Monster() override;
+
+    int attack() const override;
 };
 
-#endif
+} // namespace dungeon
+
+#endif // MONSTER_H
