@@ -3,11 +3,13 @@
 
 namespace dungeon {
 
-Player DungeonBuilder::build(std::vector<std::unique_ptr<Room>>& rooms) {
-    rooms.push_back(std::make_unique<Room>(0, "Start", "Begin"));
-    rooms.push_back(std::make_unique<Room>(1, "Cave", "Dark cave"));
+Player DungeonBuilder::build(const std::string& playerName, std::vector<std::unique_ptr<Room>>& rooms)
+{
+    rooms.push_back(std::make_unique<Room>(0, "Lumbrig", "Start of a new journey"));
+    rooms.push_back(std::make_unique<Room>(1, "Dark forest", ""));
 
     rooms[0]->connect(rooms[1].get());
+
     rooms[1]->setEnemy(std::unique_ptr<Enemy>(new Monster("Goblin", 30)));
 
 
