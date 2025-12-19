@@ -1,4 +1,7 @@
 #include "Game.h"
+#include "Room.h"
+#include "Player.h"
+#include "Enemy.h"
 #include <iostream>
 #include <algorithm>
 
@@ -9,9 +12,9 @@ Game::Game(const Game&) {}
 Game::~Game() {}
 
 void Game::showStats(const Player& player) const {
-    std::cout << "HP: " << player.getHealth()
-    << " DMG: " << player.getDamage()
-    << " DEF: " << player.getDefense() << "\n";
+    std::cout << "HP: " << static_cast<int>(player.getHealth()) << "\n";
+    std::cout << "DMG: " << static_cast<int>(player.getDamage()) << "\n";
+    std::cout << "DEF: " << static_cast<int>(player.getDefense()) << "\n";
 }
 
 void Game::showRoom(const Player& player) const
@@ -59,7 +62,7 @@ void Game::fight(Player& player) const
     if (!enemy)
         return;
 
-    std::cout << "\n⚔️  Combat started with "
+    std::cout << "\n Combat started with "
               << enemy->getName() << "!\n\n";
 
     while (!enemy->isDead() && player.getHealth() > 0)
@@ -87,7 +90,8 @@ void Game::fight(Player& player) const
                   << " attacks you for "
                   << enemyDamage << " damage!\n";
         std::cout << "Your HP: "
-                  << std::max(0, player.getHealth()) << "\n\n";
+                  << std::max<unsigned char>(0, player.getHealth());
+
     }
 
     if (player.getHealth() <= 0)
