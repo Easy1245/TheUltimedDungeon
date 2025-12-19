@@ -15,14 +15,21 @@ int main()
 
     bool gameRunning = true;
 
+    std::cout << "Enter your name, adventurer: ";
+    std::string name;
+    std::getline(std::cin, name);
+
+    if (name.empty())
+        name = "Hero";
+
     std::vector<std::unique_ptr<Room>> rooms;
 
-    Game game;
     DungeonBuilder builder;
+    Player player = builder.build(name, rooms);
 
-    Player player = builder.build(rooms);
+    Game game;
 
-    std::cout << "Welkom in de Dungeon, " << player.getName() << "!\n";
+    std::cout << "Welcome to the Dungeon, " << player.getName() << "!\n";
 
     while (gameRunning)
     {
