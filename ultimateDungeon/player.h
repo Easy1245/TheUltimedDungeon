@@ -3,18 +3,12 @@
 
 #include <string>
 #include <vector>
-#include <algorithm>
-#include <iostream>
-#include "Room.h"
-#include "Utils.h"
 
 namespace dungeon {
 
-class Game;
+class Room; // 👈 forward declaration (netjes!)
 
 class Player {
-    friend class Game;
-
 private:
     std::string name;
     Room* currentRoom;
@@ -23,30 +17,28 @@ private:
     unsigned char damage;
     unsigned char defense;
 
-    bool alive;
-
-    std::vector<std::string> inventory;
-
 public:
-    Player();
-    Player(const std::string& n, Room* start);
-    Player(const Player& other);
-    ~Player();
+    // 🔹 CONSTRUCTORS (altijd bovenaan)
+    Player();                                   // 👈 NIEUW
+    Player(const std::string& name, Room* startRoom);
 
+    // 🔹 GETTERS / SETTERS
     const std::string& getName() const;
+    void setName(const std::string& name);      // 👈 NIEUW
 
     Room* getRoom() const;
-    void moveTo(Room* r);
+    void moveTo(Room* room);
 
     unsigned char getHealth() const;
     unsigned char getDamage() const;
     unsigned char getDefense() const;
 
-    void takeDamage(unsigned char dmg = 1);
-
     void addItem(const std::string& item);
+    void takeDamage(unsigned char dmg);
+
+    std::vector<std::string> inventory;
 };
 
-}
+} // namespace dungeon
 
 #endif
