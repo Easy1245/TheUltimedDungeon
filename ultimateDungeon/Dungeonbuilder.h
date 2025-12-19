@@ -11,8 +11,8 @@ namespace dungeon {
 class DungeonBuilder
 {
 public:
-    DungeonBuilder() = default;
-    Player build(std::vector<std::unique_ptr<Room>>& rooms);
+    Player build(const std::string& playerName,
+                 std::vector<std::unique_ptr<Room>>& rooms);
 };
 
 } // namespace dungeon
