@@ -8,6 +8,11 @@
 
 namespace dungeon {
 
+Game::Game()
+    : running(true), currentRoomId(0)
+{
+}
+
 void Game::showStats(const Player& player) const {
     std::cout << player << "\n";
 }
@@ -166,9 +171,7 @@ void Game::movePlayer(Player& player, int index) const
 
 void Game::run(Player& player)
 {
-    bool running = true;
 
-    // ✅ Lambda één keer definiëren
     auto isNumber = [](const std::string& s) {
         return !s.empty() &&
                std::all_of(s.begin(), s.end(), ::isdigit);
@@ -190,13 +193,13 @@ void Game::run(Player& player)
         if (input == "q")
         {
             std::cout << "Je hebt het spel verlaten.\n";
-            running = false;
+            running = false;   // ✅ member
         }
         else if (input == "take")
         {
             takeItems(player);
         }
-        else if (isNumber(input))   // <-- lambda
+        else if (isNumber(input))
         {
             int index = std::stoi(input);
             movePlayer(player, index);
@@ -207,6 +210,7 @@ void Game::run(Player& player)
         }
     }
 }
+
 
 
 
