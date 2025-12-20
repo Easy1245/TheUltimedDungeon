@@ -12,10 +12,11 @@ Monster::Monster(const std::string& n, int h)
 Monster::Monster(const Monster& other)
     : Enemy(other) {}
 
-Monster::~Monster() {}
+Monster::~Monster() = default;
 
-int Monster::attack() const {
+int Monster::attack() const
+{
     return (std::rand() % 16) + 5;
 }
 
-}
+} // namespace dungeon
