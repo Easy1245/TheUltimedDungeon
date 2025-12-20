@@ -19,6 +19,8 @@ private:
     std::vector<std::string> items;
     std::vector<Room*> connections;
 
+    bool visited;
+
 public:
     static const int MAX_CONNECTIONS = 4;
 
@@ -46,6 +48,10 @@ public:
 
     int getId() const { return id; }
     bool hasEnemy() const { return enemy != nullptr; }
+
+    bool isVisited() const;
+    void setVisited(bool v);
+
 };
 
 }
