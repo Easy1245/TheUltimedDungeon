@@ -2,7 +2,6 @@
 #define MONSTER_H
 
 #include "Enemy.h"
-#include <cstdlib>
 #include <string>
 
 namespace dungeon {
@@ -18,6 +17,6 @@ public:
     int attack() const override;
 };
 
-}
+} // namespace dungeon
 
 #endif
