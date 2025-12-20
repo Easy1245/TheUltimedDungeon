@@ -3,6 +3,7 @@
 
 namespace dungeon {
 
+// Template function
 template <typename T>
 T clampValue(const T& value, const T& min, const T& max)
 {
