@@ -3,18 +3,21 @@
 
 #include <vector>
 #include <memory>
+#include <string>
+
 #include "Room.h"
 #include "Player.h"
 
 namespace dungeon {
 
-class DungeonBuilder
-{
+class DungeonBuilder {
 public:
-    Player build(const std::string& playerName,
-                 std::vector<std::unique_ptr<Room>>& rooms);
+    Player build(
+        const std::string& playerName,
+        std::vector<std::unique_ptr<Room>>& rooms
+        );
 };
 
 } // namespace dungeon
 
-#endif // DUNGEONBUILDER_H
+#endif
