@@ -19,6 +19,9 @@ private:
 
     friend std::ostream& operator<<(std::ostream& os, const Player& player);
 
+    bool alive;
+    bool hasTreasure;
+
 public:
     Player();
     Player(const std::string& name);
@@ -46,6 +49,12 @@ public:
 
     const std::vector<std::string>& getInventory() const;
     void clearInventory();
+
+    bool isAlive() const;
+    bool hasWon() const;
+
+    void setAlive(bool value);
+    void setHasTreasure(bool value);
 };
 
 } // namespace dungeon
