@@ -17,7 +17,8 @@ std::ostream& operator<<(std::ostream& os, const Player& player)
 
 Player::Player()
     : name("Hero"), currentRoom(nullptr),
-      health(100), damage(10), defense(0) {}
+    health(100), damage(10), defense(0),
+    alive(true), hasTreasure(false) {}
 
 Player::Player(const std::string& n)
     : name(n), currentRoom(nullptr),
@@ -53,8 +54,11 @@ void Player::moveTo(Room* r) {
     currentRoom = r;
 }
 
-void Player::takeDamage(int dmg) {
+void Player::takeDamage(int dmg)
+{
     health = clampValue(health - dmg, 0, 100);
+    if (health == 0)
+        alive = false;
 }
 
 int Player::getHealth() const { return health; }
@@ -111,6 +115,23 @@ const std::vector<std::string>& Player::getInventory() const {
 void Player::clearInventory() {
     inventory.clear();
 }
+
+bool Player::isAlive() const {
+    return alive;
+}
+
+bool Player::hasWon() const {
+    return hasTreasure;
+}
+
+void Player::setAlive(bool value) {
+    alive = value;
+}
+
+void Player::setHasTreasure(bool value) {
+    hasTreasure = value;
+}
+
 
 
 } // namespace dungeon
