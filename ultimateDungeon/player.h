@@ -24,6 +24,8 @@ public:
     Player(const std::string& name);
     Player(const std::string& name, Room* startRoom);
 
+    Player(const Player& other);
+
     const std::string& getName() const;
     void setName(const std::string& n);
 
