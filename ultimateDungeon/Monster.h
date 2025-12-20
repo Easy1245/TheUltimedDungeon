@@ -18,6 +18,6 @@ public:
     int attack() const override;
 };
 
-} // namespace dungeon
+}
 
-#endif // MONSTER_H
+#endif
