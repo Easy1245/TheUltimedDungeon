@@ -25,6 +25,6 @@ public:
     virtual int attack() const = 0;
 };
 
-} // namespace dungeon
+}
 
 #endif
