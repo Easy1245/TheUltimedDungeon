@@ -6,6 +6,13 @@
 namespace dungeon {
 
 class Game {
+
+private:
+    bool running;
+    int currentRoomId;
+
+    void enterRoom(Player& player, Room* next, Room* previous) const;
+
 public:
     Game() = default;
 
@@ -16,11 +23,6 @@ public:
     void takeItems(Player& player) const;
     void fight(Player& player) const;
     void movePlayer(Player& player, int index) const;
-
-private:
-    void enterRoom(Player& player, Room* next, Room* previous) const;
-
-    int currentRoomId = 0;
 
 };
 
