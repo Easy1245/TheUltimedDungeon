@@ -1,13 +1,16 @@
 #ifndef SAVEMANAGER_H
 #define SAVEMANAGER_H
 
-#include <vector>   
-#include <memory>   
+#include <vector>
+#include <memory>
 
 #include "Player.h"
 #include "Room.h"
 
 namespace dungeon {
+
+class Player;
+class Room;
 
 class SaveManager {
 public:
@@ -17,7 +20,7 @@ public:
 
     static bool load(Player& player,
                      int& currentRoomId,
-                     std::vector<std::unique_ptr<Room>>& rooms);
+                     const std::vector<std::unique_ptr<Room>>& rooms);
 
     static bool saveExists();
 };
