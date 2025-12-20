@@ -9,9 +9,7 @@
 namespace dungeon {
 
 void Game::showStats(const Player& player) const {
-    std::cout << "HP: " << static_cast<int>(player.getHealth()) << "\n";
-    std::cout << "DMG: " << static_cast<int>(player.getDamage()) << "\n";
-    std::cout << "DEF: " << static_cast<int>(player.getDefense()) << "\n";
+    std::cout << player << "\n";
 }
 
 void Game::showRoom(const Player& player) const
@@ -170,6 +168,12 @@ void Game::run(Player& player)
 {
     bool running = true;
 
+    // ✅ Lambda één keer definiëren
+    auto isNumber = [](const std::string& s) {
+        return !s.empty() &&
+               std::all_of(s.begin(), s.end(), ::isdigit);
+    };
+
     while (running)
     {
         showStats(player);
@@ -192,13 +196,10 @@ void Game::run(Player& player)
         {
             takeItems(player);
         }
-        else if (!input.empty() && std::isdigit(input[0]))
+        else if (isNumber(input))   // <-- lambda
         {
-            movePlayer(player, std::stoi(input));
-        }
-        else if (input == "q")
-        {
-            running = false;
+            int index = std::stoi(input);
+            movePlayer(player, index);
         }
         else
         {
@@ -206,6 +207,7 @@ void Game::run(Player& player)
         }
     }
 }
+
 
 
 } // namespace dungeon
