@@ -7,9 +7,9 @@ namespace dungeon {
 
 class Game {
 public:
-    Game();
-    Game(const Game&);
-    ~Game();
+    Game() = default;
+
+    void run(Player& player);
 
     void showStats(const Player& player) const;
     void showRoom(const Player& player) const;
@@ -19,8 +19,10 @@ public:
 
 private:
     void enterRoom(Player& player, Room* next, Room* previous) const;
+
+    int currentRoomId = 0;
+
 };
 
-} // namespace dungeon
-
+}
 #endif
