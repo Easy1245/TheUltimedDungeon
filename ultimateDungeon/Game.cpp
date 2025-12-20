@@ -3,14 +3,26 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "SaveManager.h"
+
 #include <iostream>
 #include <algorithm>
+#include <QTimer>
+
+
 
 namespace dungeon {
 
-Game::Game()
-    : running(true), currentRoomId(0)
+Game::Game(QObject* parent)
+    : QObject(parent),
+      running(true),
+      currentRoomId(0),
+      playerPtr(nullptr),
+      roomsPtr(nullptr)
 {
+    QTimer* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout,
+            this, &Game::autoSave);
+    timer->start(15000);
 }
 
 void Game::showStats(const Player& player) const {
@@ -99,7 +111,7 @@ void Game::fight(Player& player) const
         std::exit(0);
     }
 
-    std::cout << "🏆 You defeated "
+    std::cout << "You defeated "
               << enemy->getName() << "!\n";
 
     player.getRoom()->removeEnemy();
@@ -169,8 +181,10 @@ void Game::movePlayer(Player& player, int index) const
     enterRoom(player, conns[index], current);
 }
 
-void Game::run(Player& player)
+void Game::run(Player& player, const std::vector<std::unique_ptr<Room>>& rooms)
 {
+    playerPtr = &player;
+    roomsPtr = &rooms;
 
     auto isNumber = [](const std::string& s) {
         return !s.empty() &&
@@ -211,6 +225,15 @@ void Game::run(Player& player)
     }
 }
 
+void Game::autoSave()
+{
+    if (!playerPtr)
+        return;
+
+    SaveManager::save(*playerPtr, currentRoomId, *roomsPtr);
+    std::cout << "\n[Qt Autosave completed]\n> ";
+    std::cout.flush();
+}
 
 
 
