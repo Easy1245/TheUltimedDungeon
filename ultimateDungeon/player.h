@@ -29,6 +29,8 @@ public:
 
     Player(const Player& other);
 
+    Player& operator=(const Player& other);
+
     const std::string& getName() const;
     void setName(const std::string& n);
 
