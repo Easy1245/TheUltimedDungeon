@@ -38,6 +38,22 @@ Player::Player(const Player& other)
 {
 }
 
+Player& Player::operator=(const Player& other)
+{
+    if (this == &other)
+        return *this;
+
+    name = other.name;
+    currentRoom = other.currentRoom;
+    health = other.health;
+    damage = other.damage;
+    defense = other.defense;
+    inventory = other.inventory;
+
+    return *this;
+}
+
+
 const std::string& Player::getName() const {
     return name;
 }
