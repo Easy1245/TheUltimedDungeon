@@ -43,8 +43,11 @@ public:
 
     bool treasure() const;
     void setTreasure(bool t);
+
+    int getId() const { return id; }
+    bool hasEnemy() const { return enemy != nullptr; }
 };
 
-} // namespace dungeon
+}
 
 #endif
