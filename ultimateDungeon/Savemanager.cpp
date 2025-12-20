@@ -1,82 +1,79 @@
 #include "SaveManager.h"
 #include <fstream>
+#include <stdexcept>
+#include <iostream>
 
 namespace dungeon {
 
-bool SaveManager::save(const Player& player,
-                       int currentRoomId,
+bool SaveManager::save(const Player& player, int currentRoomId,
                        const std::vector<std::unique_ptr<Room>>& rooms)
 {
-    std::ofstream file("savegame.txt");
-    if (!file)
-        return false;
-
-    file << player.getName() << "\n";
-    file << player.getHealth() << " "
-         << player.getDamage() << " "
-         << player.getDefense() << "\n";
-    file << currentRoomId << "\n";
-
-    const auto& inventory = player.getInventory();
-    file << inventory.size() << "\n";
-    for (const auto& item : inventory)
-        file << item << "\n";
-
-    file << rooms.size() << "\n";
-    for (const auto& room : rooms)
+    try
     {
-        file << (room->getEnemy() != nullptr) << "\n";
-    }
+        std::ofstream file("savegame.txt");
+        if (!file)
+            throw std::runtime_error("Failed to open save file");
 
-    return true;
+        file << player.getName() << "\n";
+        file << static_cast<int>(player.getHealth()) << "\n";
+        file << static_cast<int>(player.getDamage()) << "\n";
+        file << static_cast<int>(player.getDefense()) << "\n";
+        file << currentRoomId << "\n";
+
+        file << player.getInventory().size() << "\n";
+        for (const auto& item : player.getInventory())
+            file << item << "\n";
+
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "[Save error] " << e.what() << "\n";
+        return false;
+    }
 }
 
-bool SaveManager::load(Player& player,
-                       int& currentRoomId,
-                       std::vector<std::unique_ptr<Room>>& rooms)
+
+bool SaveManager::load(Player& player, int& currentRoomId,
+                       const std::vector<std::unique_ptr<Room>>& rooms)
 {
-    std::ifstream file("savegame.txt");
-    if (!file)
+    try
+    {
+        std::ifstream file("savegame.txt");
+        if (!file)
+            throw std::runtime_error("Save file not found");
+
+        std::string name;
+        int health, damage, defense;
+        size_t inventorySize;
+
+        std::getline(file, name);
+        file >> health >> damage >> defense >> currentRoomId;
+        file >> inventorySize;
+        file.ignore();
+
+        player.setName(name);
+        player.setHealth(health);
+        player.setDamage(damage);
+        player.setDefense(defense);
+        player.clearInventory();
+
+        for (size_t i = 0; i < inventorySize; ++i)
+        {
+            std::string item;
+            std::getline(file, item);
+            player.addItemRaw(item); // 🔥 GEEN EFFECT
+        }
+
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "[Load error] " << e.what() << "\n";
         return false;
-
-    std::string name;
-    int health, damage, defense;
-
-    std::getline(file, name);
-    file >> health >> damage >> defense;
-    file >> currentRoomId;
-
-    player.setName(name);
-    player.setHealth(health);
-    player.setDamage(damage);
-    player.setDefense(defense);
-
-    size_t inventorySize;
-    file >> inventorySize;
-    file.ignore();
-
-    player.clearInventory();
-    for (size_t i = 0; i < inventorySize; ++i)
-    {
-        std::string item;
-        std::getline(file, item);
-        player.addItemRaw(item);
     }
-
-    size_t roomCount;
-    file >> roomCount;
-
-    for (size_t i = 0; i < roomCount && i < rooms.size(); ++i)
-    {
-        int hasEnemy;
-        file >> hasEnemy;
-
-        if (!hasEnemy)
-            rooms[i]->removeEnemy();
-    }
-
-    return true;
 }
+
 
 bool SaveManager::saveExists()
 {
