@@ -1,71 +1,87 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-#include <algorithm>
 #include <string>
+#include <thread>
+#include <atomic>
+#include <chrono>
 
-#include "Dungeonbuilder.h"
+#include "DungeonBuilder.h"
 #include "Game.h"
-#include "Player.h"
-#include "Room.h"
+#include "SaveManager.h"
+
+using namespace dungeon;
 
 int main()
 {
-    using namespace dungeon;
+    std::cout << "=== DUNGEON GAME ===\n";
+    std::cout << "1. New Game\n";
+    std::cout << "2. Continue\n";
+    std::cout << "Choice: ";
 
-    bool gameRunning = true;
-
-    std::cout << "Enter your name, adventurer: ";
-    std::string name;
-    std::getline(std::cin, name);
-
-    if (name.empty())
-        name = "Hero";
+    std::string choice;
+    std::getline(std::cin, choice);
 
     std::vector<std::unique_ptr<Room>> rooms;
-
     DungeonBuilder builder;
-    Player player = builder.build(name, rooms);
-
     Game game;
+    Player player;
 
-    std::cout << "Welcome to the Dungeon, " << player.getName() << "!\n";
+    int currentRoomId = 0;
 
-    while (gameRunning)
+    // building rooms
+    player = builder.build("Hero", rooms);
+
+    if (choice == "2")
     {
-        game.showStats(player);
-        game.showRoom(player);
-
-        std::cout << "\n> ";
-
-        std::string input;
-        if (!std::getline(std::cin, input))
-            continue;
-
-        // trim
-        input.erase(0, input.find_first_not_of(" \t\n\r"));
-        input.erase(input.find_last_not_of(" \t\n\r") + 1);
-
-        if (input == "q")
+        if (!SaveManager::load(player, currentRoomId, rooms))
         {
-            std::cout << "Je hebt het spel verlaten.\n";
-            gameRunning = false;
-        }
-        else if (input == "take")
-        {
-            game.takeItems(player);
-        }
-        else if (!std::all_of(input.begin(), input.end(), ::isdigit))
-        {
-            std::cout << "Ongeldige input! Typ een nummer, 'take' of 'q'.\n";
-        }
-        else
-        {
-            int index = std::stoi(input);
-            game.movePlayer(player, index);
+            std::cout << "No save found. Starting new game.\n";
+            choice = "1";
         }
     }
 
-    std::cout << "\n🎮 Game gesloten.\n";
+    if (choice == "1")
+    {
+        std::cout << "Enter your name: ";
+        std::string name;
+        std::getline(std::cin, name);
+
+        if (name.empty())
+            name = "Hero";
+
+        player.setName(name);
+        currentRoomId = 0;
+    }
+
+    // locate player
+    player.moveTo(rooms[currentRoomId].get());
+
+    std::cout << "\nWelcome to the Dungeon, "
+              << player.getName() << "!\n";
+
+    std::atomic<bool> autosaveRunning{true};
+
+    std::thread autosaveThread([&]() {
+        while (autosaveRunning)
+        {
+            std::this_thread::sleep_for(std::chrono::seconds(15));
+            SaveManager::save(player, currentRoomId, rooms);
+            std::cout << "\n[Autosave completed]\n> ";
+            std::cout.flush();
+        }
+    });
+
+    // Game loop
+    game.run(player);
+
+    autosaveRunning = false;
+    if (autosaveThread.joinable())
+        autosaveThread.join();
+
+    // latest save
+    SaveManager::save(player, currentRoomId, rooms);
+
+    std::cout << "\n Game gesloten.\n";
     return 0;
 }
