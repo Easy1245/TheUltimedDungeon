@@ -27,6 +27,16 @@ Player::Player(const std::string& n, Room* startRoom)
     : name(n), currentRoom(startRoom),
       health(100), damage(10), defense(0) {}
 
+Player::Player(const Player& other)
+    : name(other.name),
+    currentRoom(other.currentRoom),
+    health(other.health),
+    damage(other.damage),
+    defense(other.defense),
+    inventory(other.inventory)
+{
+}
+
 const std::string& Player::getName() const {
     return name;
 }
