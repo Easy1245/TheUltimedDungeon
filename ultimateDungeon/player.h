@@ -17,6 +17,8 @@ private:
     unsigned char defense;
     std::vector<std::string> inventory;
 
+    friend std::ostream& operator<<(std::ostream& os, const Player& player);
+
 public:
     Player();
     Player(const std::string& name);
@@ -29,6 +31,7 @@ public:
     void moveTo(Room* r);
 
     void addItem(const std::string& item);
+    void addItemRaw(const std::string& item);
     void takeDamage(int dmg);
 
     void setHealth(int health);
