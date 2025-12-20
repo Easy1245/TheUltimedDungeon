@@ -1,8 +1,19 @@
 #include "Player.h"
 #include "Room.h"
+#include "Utils.h"
 #include <algorithm>
+#include <iostream>
 
 namespace dungeon {
+
+std::ostream& operator<<(std::ostream& os, const Player& player)
+{
+    os << "HP: "  << static_cast<int>(player.health)
+    << " | DMG: " << static_cast<int>(player.damage)
+    << " | DEF: " << static_cast<int>(player.defense);
+    return os;
+}
+
 
 Player::Player()
     : name("Hero"), currentRoom(nullptr),
@@ -33,16 +44,40 @@ void Player::moveTo(Room* r) {
 }
 
 void Player::takeDamage(int dmg) {
-    health = std::max(0, health - dmg);
+    health = clampValue(health - dmg, 0, 100);
 }
 
 int Player::getHealth() const { return health; }
 int Player::getDamage() const { return damage; }
 int Player::getDefense() const { return defense; }
 
-void Player::addItem(const std::string& item) {
+void Player::addItem(const std::string& item)
+{
+    inventory.push_back(item);
+
+    if (item == "Golden Apple")
+    {
+        health = clampValue(health + 35, 0, 100);
+    }
+    else if (item == "Enchanted Golden Apple")
+    {
+        health = clampValue(health + 75, 0, 100);
+    }
+    else if (item == "Hyrule Shield")
+    {
+        defense += 10;
+    }
+    else if (item == "Iron Pickaxe")
+    {
+        damage += 15;
+    }
+}
+
+void Player::addItemRaw(const std::string& item)
+{
     inventory.push_back(item);
 }
+
 
 void Player::setHealth(int health)
 {
