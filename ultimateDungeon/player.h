@@ -6,39 +6,42 @@
 
 namespace dungeon {
 
-class Room; // 👈 forward declaration (netjes!)
+class Room;
 
 class Player {
 private:
     std::string name;
     Room* currentRoom;
-
     unsigned char health;
     unsigned char damage;
     unsigned char defense;
+    std::vector<std::string> inventory;
 
 public:
-    // 🔹 CONSTRUCTORS (altijd bovenaan)
-    Player();                                   // 👈 NIEUW
+    Player();
+    Player(const std::string& name);
     Player(const std::string& name, Room* startRoom);
 
-    // 🔹 GETTERS / SETTERS
     const std::string& getName() const;
-    void setName(const std::string& name);      // 👈 NIEUW
+    void setName(const std::string& n);
 
     Room* getRoom() const;
-    void moveTo(Room* room);
-
-    unsigned char getHealth() const;
-    unsigned char getDamage() const;
-    unsigned char getDefense() const;
+    void moveTo(Room* r);
 
     void addItem(const std::string& item);
-    void takeDamage(unsigned char dmg);
+    void takeDamage(int dmg);
 
-    std::vector<std::string> inventory;
+    void setHealth(int health);
+    void setDamage(int damage);
+    void setDefense(int defense);
+
+    int getHealth() const;
+    int getDamage() const;
+    int getDefense() const;
+
+    const std::vector<std::string>& getInventory() const;
+    void clearInventory();
 };
 
 } // namespace dungeon
-
 #endif
