@@ -18,4 +18,4 @@ int Monster::attack() const {
     return (std::rand() % 16) + 5;
 }
 
-} // namespace dungeon
+}
