@@ -55,4 +55,4 @@ const std::vector<Room*>& Room::getConnections() const {
 bool Room::treasure() const { return hasTreasure; }
 void Room::setTreasure(bool t) { hasTreasure = t; }
 
-} // namespace dungeon
+}
