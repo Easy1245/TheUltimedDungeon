@@ -3,7 +3,8 @@
 namespace dungeon {
 
 Room::Room()
-    : id(-1), name("Unknown"), description(""), hasTreasure(false) {}
+    : id(-1), name("Unknown"), description(""),
+        hasTreasure(false), visited(false) {}
 
 Room::Room(int i, const std::string& n, const std::string& d)
     : id(i), name(n), description(d), hasTreasure(false) {}
@@ -54,5 +55,8 @@ const std::vector<Room*>& Room::getConnections() const {
 
 bool Room::treasure() const { return hasTreasure; }
 void Room::setTreasure(bool t) { hasTreasure = t; }
+
+bool Room::isVisited() const {return visited; }
+void Room::setVisited(bool v) {visited = v; }
 
 }
