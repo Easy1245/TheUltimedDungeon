@@ -73,7 +73,7 @@ int main()
     });
 
     // Game loop
-    game.run(player);
+    game.run(player, rooms);
 
     autosaveRunning = false;
     if (autosaveThread.joinable())
