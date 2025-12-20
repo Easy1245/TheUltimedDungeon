@@ -2,14 +2,11 @@
 #include "Room.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "SaveManager.h"
 #include <iostream>
 #include <algorithm>
 
 namespace dungeon {
-
-Game::Game() {}
-Game::Game(const Game&) {}
-Game::~Game() {}
 
 void Game::showStats(const Player& player) const {
     std::cout << "HP: " << static_cast<int>(player.getHealth()) << "\n";
@@ -47,7 +44,6 @@ void Game::showRoom(const Player& player) const
                   << conns[i]->getName() << "\n";
     }
 }
-
 
 void Game::takeItems(Player& player) const {
     auto& items = player.getRoom()->accessItems();
@@ -96,7 +92,7 @@ void Game::fight(Player& player) const
 
     if (player.getHealth() <= 0)
     {
-        std::cout << "💀 You died. Game over.\n";
+        std::cout << "You died. Game over.\n";
         std::exit(0);
     }
 
@@ -165,7 +161,50 @@ void Game::movePlayer(Player& player, int index) const
         return;
     }
 
+    const_cast<Game*>(this)->currentRoomId = conns[index]->getId();
+
     enterRoom(player, conns[index], current);
+}
+
+void Game::run(Player& player)
+{
+    bool running = true;
+
+    while (running)
+    {
+        showStats(player);
+        showRoom(player);
+
+        std::cout << "\n> ";
+        std::string input;
+        std::getline(std::cin, input);
+
+        // trim
+        input.erase(0, input.find_first_not_of(" \t\n\r"));
+        input.erase(input.find_last_not_of(" \t\n\r") + 1);
+
+        if (input == "q")
+        {
+            std::cout << "Je hebt het spel verlaten.\n";
+            running = false;
+        }
+        else if (input == "take")
+        {
+            takeItems(player);
+        }
+        else if (!input.empty() && std::isdigit(input[0]))
+        {
+            movePlayer(player, std::stoi(input));
+        }
+        else if (input == "q")
+        {
+            running = false;
+        }
+        else
+        {
+            std::cout << "Ongeldige input! Typ een nummer, 'take' of 'q'.\n";
+        }
+    }
 }
 
 
