@@ -1,78 +1,148 @@
-# TheUltimedDungeon
+🏰 UltimateDungeon
+----------------------
+Een moderne C++ dungeon crawler gebouwd met C++17 en Qt Widgets. Verken kamers, versla vijanden, verzamel items en vind uiteindelijk de treasure om het spel te winnen.
 
-⚔️ Welkom, avonturier!
-The Ultimate Dungeon is een tekstgebaseerde dungeon crawler in C++ waarin je door verschillende kamers navigeert, monsters verslaat, items verzamelt en uiteindelijk de schat vindt.
+Dit project werd ontwikkeld als school-/examenopdracht, met nadruk op Object-Oriented Programming, C++‑features, en Qt‑integratie.
 
-🏰 Gameplay
+🎮 Gameplay
+- Start een New Game met een eigen naam
 
-- Verken kamers verbonden door paden.
+- Navigeer door kamers via genummerde uitgangen
 
-- Vecht tegen monsters met unieke stats (gezondheid, schade).
+- Verzamel items met take
 
-- Verzamel krachtige items zoals Excaliber, Golden Apple en Enchanted Armor om je vaardigheden te verbeteren.
+- Vecht tegen vijanden met fight
 
-- Vind de schatkamer en voltooi het spel.
+- Versla eindbazen
 
-🏰 Kamers & Connecties
+- Vind en pak de treasure om te winnen
 
-- Het spel bevat 22 unieke kamers, waaronder:
+- Autosave via Qt QTimer (elke 15 seconden)
 
-- Lumbrig – beginpunt van je avontuur.
+🧱 Architectuur & OOP
+Klassenoverzicht
+Game – centrale game‑flow en logica
 
-- Darkshrine – een griezelige tempel vol duistere energie.
+Room – kamers met verbindingen, items, vijanden en treasure
 
-- Hyrule Castle – majestueus kasteel met schatten.
+Player – stats, inventory en acties
 
-- Ethernaty, the End – het einde van je reis met de eindmonster en schat.
+Enemy (abstract) – basis vijandklasse
 
-Kamers hebben maximaal 4 verbindingen en sommige kamers bevatten monsters of speciale items.
+Monster – concrete vijand (polymorfisme)
 
-👹 Monsters
+DungeonBuilder – genereert de volledige dungeon
 
-Voorbeelden van monsters:
+SaveManager – save/load via file I/O
 
-- Dark Spirit – 50 HP
+MainWindow – Qt GUI (widgets, signals/slots)
 
-- Fire Dragon – 80 HP
+🧠 OOP‑Concepten
+Encapsulation – private members + getters/setters
 
-- Guardian Snake – 55 HP
+Inheritance – Monster erft van Enemy
 
-Slifer The Sky Dragon – 150 HP (eindmonster)
+Polymorphism – virtuele functies (attack(), takeDamage())
 
-Monstergevechten zijn turn-based en schade kan worden gemitigeerd door je defense.
+Abstract Base Class – Enemy bevat pure virtuals
 
-🧠 Items
+Composition – Room bevat items, treasure en vijanden
 
-Belangrijke items die je kunt vinden:
+Constructor forwarding & initializer lists
 
-- Excaliber – +50 damage
+Copy constructors & destructors
 
-- Iron Pickaxe – +15 damage
+⚙️ Gebruikte C++ Features
+std::vector, std::unique_ptr
 
-- Hyrule Shield – verhoogt defense
+std::string
 
-- Golden Apple – herstelt 35 HP
+std::fstream voor save/load
 
-- Enchanted Golden Apple – herstelt 75 HP
+std::exception + try/catch
 
-- Enchanted Armor – +40 defense
+std::thread / std::atomic (eerste autosave‑versie)
 
-- Fernandes bottle – herstelt 30 HP
+Qt QTimer (definitieve autosave)
 
-Items worden automatisch gebruikt bij het oppakken.
+Lambda’s
 
-🎯 Doel van het spel
+Const‑correctheid
 
-Verzamel items en sleutelobjecten om vooruitgang te boeken. Versla monsters die je tegenkomt. Vind de schat in Ethernaty, the End en overleef het gevecht met Slifer The Sky Dragon.
+Namespaces
 
-⌘ Controls
+Dynamisch geheugenbeheer
 
-- [0-3] – beweeg naar de verbonden kamer met het corresponderende nummer.
+Templates (utility functies)
 
-- take – pak alle items in de kamer op.
+🖥️ GUI (Qt Widgets)
+Ontwikkeld met Qt Creator
 
-- q – stop het spel.
+.ui‑bestanden (Qt Designer)
 
-- a – aanval (in gevecht)
+signals & slots
 
-- r – vlucht (in gevecht)
+QMainWindow
+
+QTextEdit voor game‑output
+
+QLineEdit voor command input
+
+QPushButton voor New Game / Continue
+
+💾 Save System
+Autosave elke 15 seconden
+
+Handmatig opslaan bij afsluiten
+
+Opgeslagen data:
+
+Spelernaam
+
+Health / Damage / Defense
+
+Inventory
+
+Current Room ID
+
+🏆 Winconditie
+Je wint wanneer je de treasure in de eindkamer opraapt (take).
+
+📁 Projectstructuur
+
+ultimateDungeon/
+│── DungeonBuilder.*
+│── Enemy.*
+│── Monster.*
+│── Player.*
+│── Room.*
+│── Game.*
+│── SaveManager.*
+│── Utils.h
+│── main.cpp
+│── mainwindow.*
+│── mainwindow.ui
+│── ultimateDungeon.pro
+
+
+---
+
+## 📌 Status
+
+✔ Project compileert  
+✔ Project crasht niet  
+✔ Volledig speelbaar  
+✔ OOP & C++ vereisten behaald  
+✔ Qt GUI geïntegreerd  
+
+---
+
+## 👤 Auteur
+
+- **Naam:** Jonas Vanmarsenille
+- **Opleiding:** Elektronica ICT
+- **Jaar:** 2025
+
+---
+
+🎉 **Veel speelplezier in UltimateDungeon!**
