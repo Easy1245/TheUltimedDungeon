@@ -1,0 +1,11 @@
+debug/Dungeonbuilder.o
+debug/Enemy.o
+debug/Game.o
+debug/Monster.o
+debug/Player.o
+debug/Room.o
+debug/Savemanager.o
+debug/main.o
+debug/mainwindow.o
+debug/moc_Game.o
+debug/moc_mainwindow.o

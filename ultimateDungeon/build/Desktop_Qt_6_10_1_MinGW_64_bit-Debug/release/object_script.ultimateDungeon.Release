@@ -1,0 +1,11 @@
+release/Dungeonbuilder.o
+release/Enemy.o
+release/Game.o
+release/Monster.o
+release/Player.o
+release/Room.o
+release/Savemanager.o
+release/main.o
+release/mainwindow.o
+release/moc_Game.o
+release/moc_mainwindow.o
