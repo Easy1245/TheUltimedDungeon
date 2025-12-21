@@ -108,6 +108,23 @@ Current Room ID
 🏆 Winconditie
 Je wint wanneer je de treasure in de eindkamer opraapt (take).
 
+🛠️ Build‑instructies
+Vereisten
+Qt 5 of Qt 6
+
+Qt Creator
+
+C++17‑compatibele compiler (GCC / MinGW / MSVC)
+
+Stappen
+Open ultimateDungeon.pro in Qt Creator
+
+Kies een geschikte build‑kit
+
+Klik Build
+
+Klik Run
+
 📁 Projectstructuur
 
 ultimateDungeon/
